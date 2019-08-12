@@ -26,16 +26,19 @@ namespace TestTaskVodokanal.Pages.ApplicationPages
         {
             Application = new ApplicationIndexData
             {
-                Applications = await _context.Application.ToListAsync()
+                Applications = await _context.Application
+                .Include(s=>s.ChangeHistory)
+                .ToListAsync()
             };
 
             if (id != null)
             {
                 // Узнаем ид выбранного элемента
                 ApplicationID = id.Value;
-                // Сортируем заяки по id;
+                // Извлекаем заяки по id;
                 Application selectApplication = Application.Applications.Single(s => s.ApplicationID == id.Value);
-                Application.Historys = Application.Applications.Where(s => s.ApplicationID == id.Value).Single().ChangeHistory;
+                
+                Application.Historys = selectApplication.ChangeHistory.Where(s => s.ApplicationId == id.Value);
             }
         }
     }

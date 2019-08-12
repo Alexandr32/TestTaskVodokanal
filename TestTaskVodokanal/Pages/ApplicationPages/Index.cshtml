@@ -21,39 +21,72 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Application.Applications) {
+        @foreach (var item in Model.Application.Applications)
+        {
 
-    string selectedRow = "";
-    if (item.ApplicationID == Model.ApplicationID)
-    {
+            string selectedRow = "";
+            if (item.ApplicationID == Model.ApplicationID)
+            {
                 // Динамически добавляет class="success" к элементу tr
                 // выбранного преподавателя. Этот параметр задает цвет фона для
                 // выделенных строк c помощью класса Bootstrap.
                 selectedRow = "success";
-    }
+            }
 
-        <tr class="@selectedRow">
-            <td>
-                @Html.DisplayFor(modelItem => item.RegistrationDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Status)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                <a asp-page="./Index" asp-route-id="@item.ApplicationID">Информация</a> |
-                <a asp-page="./Edit" asp-route-id="@item.ApplicationID">Редактировать</a> |
-                <a asp-page="./Details" asp-route-id="@item.ApplicationID">Обзор</a> |
-                <a asp-page="./Delete" asp-route-id="@item.ApplicationID">Удалить</a>
-            </td>
-        </tr>
-}
+            <tr class="@selectedRow">
+                <td>
+                    @Html.DisplayFor(modelItem => item.RegistrationDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    <a asp-page="./Index" asp-route-id="@item.ApplicationID">Информация</a> |
+                    <a asp-page="./Edit" asp-route-id="@item.ApplicationID">Редактировать</a> |
+                    <a asp-page="./Details" asp-route-id="@item.ApplicationID">Обзор</a> |
+                    <a asp-page="./Delete" asp-route-id="@item.ApplicationID">Удалить</a>
+                </td>
+            </tr>
+        }
     </tbody>
-
-
 </table>
+@*Отображает историю выбранного элемента *@
+@if (Model.Application.Historys != null)
+{
+    <h3>
+        Информация о заявке
+    </h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Дата</th>
+                <th>Статус</th>
+                <th>Комментарий</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Application.Historys)
+            {
+
+                <tr>
+                    <td>
+                        @item.RegistrationDate
+                    </td>
+                    <td>
+                        @item.Status
+                    </td>
+                    <td>
+                        @item.Comment
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

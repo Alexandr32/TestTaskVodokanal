@@ -35,7 +35,7 @@ namespace TestTaskVodokanal.Pages.ApplicationPages
                 ApplicationID = id.Value;
                 // Сортируем заяки по id;
                 Application selectApplication = Application.Applications.Single(s => s.ApplicationID == id.Value);
-                //Application.Historys = selectApplication.ChangeHistory.Single();
+                Application.Historys = Application.Applications.Where(s => s.ApplicationID == id.Value).Single().ChangeHistory;
             }
         }
     }

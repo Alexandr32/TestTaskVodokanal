@@ -26,7 +26,7 @@ namespace TestTaskVodokanal.Pages.ApplicationPages
         /// <summary>
         /// История завки
         /// </summary>
-        public IEnumerable<History> History { get; set; }
+        public IEnumerable<History> Historys { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -49,7 +49,7 @@ namespace TestTaskVodokanal.Pages.ApplicationPages
             //Application = await _context.Application.FirstOrDefaultAsync(m => m.ApplicationID == id);
             //Application = await _context.Application.Include(s => s.ChangeHistory).ToListAsync().Single(s => s.ApplicationID == id.Value);
             //Historys = Application.ChangeHistory.Where(s => s.ApplicationId == id);
-            History = Application.ChangeHistory.Where(s => s.ApplicationId == id);
+            Historys = Application.ChangeHistory.Where(s => s.ApplicationId == id);
 
             return Page();
         }

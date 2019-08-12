@@ -13,24 +13,26 @@
 <table class="table">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Application[0].RegistrationDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Application[0].Status)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Application[0].Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Application[0].Description)
-            </th>
+            <th>Дата регестрации</th>
+            <th>Статус</th>
+            <th>Имя</th>
+            <th>Описание</th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Application) {
-        <tr>
+@foreach (var item in Model.Application.Applications) {
+
+    string selectedRow = "";
+    if (item.ApplicationID == Model.ApplicationID)
+    {
+                // Динамически добавляет class="success" к элементу tr
+                // выбранного преподавателя. Этот параметр задает цвет фона для
+                // выделенных строк c помощью класса Bootstrap.
+                selectedRow = "success";
+    }
+
+        <tr class="@selectedRow">
             <td>
                 @Html.DisplayFor(modelItem => item.RegistrationDate)
             </td>
@@ -44,11 +46,14 @@
                 @Html.DisplayFor(modelItem => item.Description)
             </td>
             <td>
-                <a asp-page="./Edit" asp-route-id="@item.ApplicationID">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.ApplicationID">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.ApplicationID">Delete</a>
+                <a asp-page="./Index" asp-route-id="@item.ApplicationID">Информация</a> |
+                <a asp-page="./Edit" asp-route-id="@item.ApplicationID">Редактировать</a> |
+                <a asp-page="./Details" asp-route-id="@item.ApplicationID">Обзор</a> |
+                <a asp-page="./Delete" asp-route-id="@item.ApplicationID">Удалить</a>
             </td>
         </tr>
 }
     </tbody>
+
+
 </table>

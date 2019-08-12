@@ -6,11 +6,15 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using TestTaskVodokanal.Models;
+using TestTaskVodokanal.Models.ViewModels;
 
 namespace TestTaskVodokanal.Pages.ApplicationPages
 {
     public class IndexModel : PageModel
     {
+        public int ApplicationID{ get; set;}
+        public ApplicationIndexData Application { get; set; }
+
         private readonly TestTaskVodokanal.Models.TestTaskVodokanalContext _context;
 
         public IndexModel(TestTaskVodokanal.Models.TestTaskVodokanalContext context)
@@ -18,11 +22,21 @@ namespace TestTaskVodokanal.Pages.ApplicationPages
             _context = context;
         }
 
-        public IList<Application> Application { get;set; }
-
-        public async Task OnGetAsync()
+        public async Task OnGetAsync(int? id)
         {
-            Application = await _context.Application.ToListAsync();
+            Application = new ApplicationIndexData
+            {
+                Applications = await _context.Application.ToListAsync()
+            };
+
+            if (id != null)
+            {
+                // Узнаем ид выбранного элемента
+                ApplicationID = id.Value;
+                // Сортируем заяки по id;
+                Application selectApplication = Application.Applications.Single(s => s.ApplicationID == id.Value);
+                //Application.Historys = selectApplication.ChangeHistory.Single();
+            }
         }
     }
 }

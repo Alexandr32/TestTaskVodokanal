@@ -1,0 +1,46 @@
+﻿@page
+@model TestTaskVodokanal.Pages.ApplicationPages.DeleteModel
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Application</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Application.RegistrationDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Application.RegistrationDate)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Application.Status)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Application.Status)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Application.Name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Application.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Application.Description)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Application.Description)
+        </dd>
+    </dl>
+    
+    <form method="post">
+        <input type="hidden" asp-for="Application.ApplicationID" />
+        <input type="submit" value="Delete" class="btn btn-default" /> |
+        <a asp-page="./Index">Back to List</a>
+    </form>
+</div>

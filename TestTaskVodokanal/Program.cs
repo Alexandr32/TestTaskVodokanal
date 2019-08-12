@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using TestTaskVodokanal.Models;
 
 namespace TestTaskVodokanal
 {
@@ -14,7 +16,34 @@ namespace TestTaskVodokanal
     {
         public static void Main(string[] args)
         {
-            CreateWebHostBuilder(args).Build().Run();
+            var host = CreateWebHostBuilder(args).Build();
+
+            using (var scope = host.Services.CreateScope())
+            {
+                var services = scope.ServiceProvider;
+
+                try
+                {
+                    var context = services.GetRequiredService<TestTaskVodokanalContext>();
+
+                    // EnsureCreated позволяет проверить существование базы данных для контекста.
+                    // Если контекст существует, никаких действий не предпринимается. 
+                    // Если контекст не существует, создаются база данных и вся ее схема.
+                    // EnsureCreated не использует миграции для создания базы данных.
+                    
+                    context.Database.EnsureCreated();
+
+                    // Используется для инициализации первичных данных 
+                    //DbInitializer.Initialize(context);
+                }
+                catch (Exception ex)
+                {
+                    var logger = services.GetRequiredService<ILogger<Program>>();
+                    logger.LogError(ex, "Произошла ошибка при создании БД.");
+                }
+            }
+
+            host.Run();
         }
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>

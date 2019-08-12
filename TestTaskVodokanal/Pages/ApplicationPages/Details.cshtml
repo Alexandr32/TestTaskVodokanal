@@ -1,0 +1,43 @@
+﻿@page
+@model TestTaskVodokanal.Pages.ApplicationPages.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Application</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Application.RegistrationDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Application.RegistrationDate)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Application.Status)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Application.Status)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Application.Name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Application.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Application.Description)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Application.Description)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-page="./Edit" asp-route-id="@Model.Application.ApplicationID">Edit</a> |
+    <a asp-page="./Index">Back to List</a>
+</div>

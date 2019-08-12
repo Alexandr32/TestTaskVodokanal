@@ -1,0 +1,48 @@
+﻿@page
+@model TestTaskVodokanal.Pages.HistoryPages.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h2>Create</h2>
+
+<h4>History</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="History.ApplicationId" class="control-label"></label>
+                <select asp-for="History.ApplicationId" class ="form-control" asp-items="ViewBag.ApplicationId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="History.RegistrationDate" class="control-label"></label>
+                <input asp-for="History.RegistrationDate" class="form-control" />
+                <span asp-validation-for="History.RegistrationDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="History.Status" class="control-label"></label>
+                <select asp-for="History.Status" class="form-control"></select>
+                <span asp-validation-for="History.Status" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="History.Comment" class="control-label"></label>
+                <input asp-for="History.Comment" class="form-control" />
+                <span asp-validation-for="History.Comment" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

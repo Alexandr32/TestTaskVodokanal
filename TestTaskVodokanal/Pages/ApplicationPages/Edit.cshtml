@@ -27,8 +27,6 @@
                         class="form-control">
                 </select>
             </div>
-
-
             <div class="form-group">
                 <label asp-for="Application.Name" class="control-label"></label>
                 <input asp-for="Application.Name" class="form-control" />
@@ -44,6 +42,39 @@
             </div>
         </form>
     </div>
+</div>
+
+<div>
+    <h3>
+        Информация о заявке
+    </h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Дата</th>
+                <th>Статус</th>
+                <th>Комментарий</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.History)
+            {
+
+                <tr>
+                    <td>
+                        @item.RegistrationDate
+                    </td>
+                    <td>
+                        @item.Status
+                    </td>
+                    <td>
+                        @item.Comment
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 </div>
 
 <div>

@@ -7,9 +7,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TestTaskVodokanal.Models;
-using TestTaskVodokanal.Models.ViewModels;
 
-namespace TestTaskVodokanal.Pages.ApplicationPages
+namespace TestTaskVodokanal.Pages.HistoryPages
 {
     public class EditModel : PageModel
     {
@@ -21,12 +20,7 @@ namespace TestTaskVodokanal.Pages.ApplicationPages
         }
 
         [BindProperty]
-        public Application Application { get; set; }
-        
-        /// <summary>
-        /// История завки
-        /// </summary>
-        public IEnumerable<History> History { get; set; }
+        public History History { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -34,23 +28,13 @@ namespace TestTaskVodokanal.Pages.ApplicationPages
             {
                 return NotFound();
             }
-            // Подтягивание данных
-            //Application = await _context.Application.Include(b => b.ChangeHistory).FirstAsync();
-            Application = await _context.Application
-                .Include(b => b.ChangeHistory)
-                .FirstAsync(s => s.ApplicationID == id);
 
-            
-            if (Application == null)
+            History = await _context.History.FirstOrDefaultAsync(m => m.HistoryID == id);
+
+            if (History == null)
             {
                 return NotFound();
             }
-
-            //Application = await _context.Application.FirstOrDefaultAsync(m => m.ApplicationID == id);
-            //Application = await _context.Application.Include(s => s.ChangeHistory).ToListAsync().Single(s => s.ApplicationID == id.Value);
-            //Historys = Application.ChangeHistory.Where(s => s.ApplicationId == id);
-            History = Application.ChangeHistory.Where(s => s.ApplicationId == id);
-
             return Page();
         }
 
@@ -61,7 +45,7 @@ namespace TestTaskVodokanal.Pages.ApplicationPages
                 return Page();
             }
 
-            _context.Attach(Application).State = EntityState.Modified;
+            _context.Attach(History).State = EntityState.Modified;
 
             try
             {
@@ -69,7 +53,7 @@ namespace TestTaskVodokanal.Pages.ApplicationPages
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ApplicationExists(Application.ApplicationID))
+                if (!HistoryExists(History.HistoryID))
                 {
                     return NotFound();
                 }
@@ -82,9 +66,9 @@ namespace TestTaskVodokanal.Pages.ApplicationPages
             return RedirectToPage("./Index");
         }
 
-        private bool ApplicationExists(int id)
+        private bool HistoryExists(int id)
         {
-            return _context.Application.Any(e => e.ApplicationID == id);
+            return _context.History.Any(e => e.HistoryID == id);
         }
     }
 }

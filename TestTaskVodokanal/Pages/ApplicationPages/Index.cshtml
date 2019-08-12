@@ -12,20 +12,14 @@
     <a asp-page="Create">Create New</a>
 </p>
 
-@*<form>
-    <p>
-        <select asp-for="SelectStatus" asp-items="Html.GetEnumSelectList<Status>()">
-            <option value="Все статусы">Все</option>
-        </select>
-    </p>
-</form>*@
-
 <table class="table">
     <thead>
         <tr>
             <th>Дата регестрации</th>
             <th>
-                <a asp-page="./Index" asp-route-sortOrder="@Model.StatusSort" asp-route-currentFilter="@Model.CurrentSort">
+                <a asp-page="./Index" 
+                   asp-route-sortOrder="@Model.StatusSort" 
+                   asp-route-currentFilter="@Model.CurrentSort">
                     Статус
                 </a>
             </th>

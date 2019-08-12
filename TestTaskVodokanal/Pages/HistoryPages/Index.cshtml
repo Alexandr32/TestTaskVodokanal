@@ -1,0 +1,48 @@
+﻿@page
+@model TestTaskVodokanal.Pages.HistoryPages.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.History[0].RegistrationDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.History[0].Status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.History[0].Comment)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.History) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.RegistrationDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Comment)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.HistoryID">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.HistoryID">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.HistoryID">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

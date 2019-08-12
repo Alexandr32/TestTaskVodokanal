@@ -24,11 +24,6 @@ namespace TestTaskVodokanal.Pages.ApplicationPages
         /// </summary>
         public string StatusSort { get; set; }
 
-        /// <summary>
-        /// Выбранный статус для поиска
-        /// </summary>
-        //public Status SelectStatus { get; set; }
-
 
         private readonly TestTaskVodokanal.Models.TestTaskVodokanalContext _context;
 
@@ -49,7 +44,7 @@ namespace TestTaskVodokanal.Pages.ApplicationPages
             Application = new ApplicationIndexData
             {
                 Applications = await _context.Application
-                .Include(s=>s.ChangeHistory)
+                .Include(s => s.ChangeHistory)
                 .AsNoTracking() // Выведенный список нет необходимости хранить в кэше
                 .ToListAsync()
             };

@@ -19,6 +19,8 @@ namespace TestTaskVodokanal.Pages.ApplicationPages
             _context = context;
         }
 
+        //public Status StatusApplication { get; set; }
+
         [BindProperty]
         public Application Application { get; set; }
 
@@ -35,6 +37,10 @@ namespace TestTaskVodokanal.Pages.ApplicationPages
             {
                 return NotFound();
             }
+
+            // Получаем текущий статус задачи
+            //StatusApplication = Application.Status;
+
             return Page();
         }
 

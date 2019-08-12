@@ -26,7 +26,6 @@ namespace TestTaskVodokanal.Models
     {
         public int ApplicationID { get; set; }
 
-        [Required]
         /// <summary>
         /// Дата регестрации заявки
         /// </summary>

@@ -28,6 +28,7 @@ namespace TestTaskVodokanal.Pages.ApplicationPages
             {
                 Applications = await _context.Application
                 .Include(s=>s.ChangeHistory)
+                .AsNoTracking() // Выведенный список нет необходимости хранить в кэше
                 .ToListAsync()
             };
 
@@ -37,7 +38,6 @@ namespace TestTaskVodokanal.Pages.ApplicationPages
                 ApplicationID = id.Value;
                 // Извлекаем заяки по id;
                 Application selectApplication = Application.Applications.Single(s => s.ApplicationID == id.Value);
-                
                 Application.Historys = selectApplication.ChangeHistory.Where(s => s.ApplicationId == id.Value);
             }
         }

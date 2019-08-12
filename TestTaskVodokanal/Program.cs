@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using TestTaskVodokanal.Data;
 using TestTaskVodokanal.Models;
 
 namespace TestTaskVodokanal
@@ -30,11 +31,10 @@ namespace TestTaskVodokanal
                     // Если контекст существует, никаких действий не предпринимается. 
                     // Если контекст не существует, создаются база данных и вся ее схема.
                     // EnsureCreated не использует миграции для создания базы данных.
-                    
                     context.Database.EnsureCreated();
 
-                    // Используется для инициализации первичных данных 
-                    //DbInitializer.Initialize(context);
+                    // Инициализации первичных данных 
+                    DbInitializer.Initialize(context);
                 }
                 catch (Exception ex)
                 {

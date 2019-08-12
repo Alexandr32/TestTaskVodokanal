@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using TestTaskVodokanal.Models;
 
 namespace TestTaskVodokanal.Models
 {
@@ -14,5 +15,7 @@ namespace TestTaskVodokanal.Models
         }
 
         public DbSet<TestTaskVodokanal.Models.Application> Application { get; set; }
+
+        public DbSet<TestTaskVodokanal.Models.History> History { get; set; }
     }
 }

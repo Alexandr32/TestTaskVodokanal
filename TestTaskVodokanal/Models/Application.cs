@@ -26,16 +26,17 @@ namespace TestTaskVodokanal.Models
     {
         public int ApplicationID { get; set; }
 
-        [Required, Display(Name = "Дата регестрации завки")]
         /// <summary>
         /// Дата регестрации заявки
         /// </summary>
+        [Required, Display(Name = "Дата регестрации завки")]
+        [DisplayFormat(DataFormatString = "{0:hh:mm dd.MM.yyyy}", ApplyFormatInEditMode = true)]
         public DateTime RegistrationDate { get; set; }
 
-        [Required, Display(Name = "Текущий статус завки")]
         /// <summary>
         /// Статус завки
         /// </summary>
+        [Required, Display(Name = "Текущий статус завки")]
         public Status Status { get; set; }
 
         [Required, Display(Name = "Название")]

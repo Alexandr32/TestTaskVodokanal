@@ -12,22 +12,23 @@ namespace TestTaskVodokanal.Models
 
         public int ApplicationId { get; set; }
 
-        [Required, Display(Name = "Дата внесения изменений")]
         /// <summary>
         /// Дата снесения изменений
         /// </summary>
+        [Required, Display(Name = "Дата внесения изменений")]
+        [DisplayFormat(DataFormatString = "{0:hh:mm dd.MM.yyyy}", ApplyFormatInEditMode = true)]
         public DateTime RegistrationDate { get; set; }
 
-        [Required, Display(Name = "Статус")]
         /// <summary>
         /// Статус завки
         /// </summary>
+        [Required, Display(Name = "Статус")]
         public Status Status { get; set; }
 
-        [Required, Display(Name = "Комментарий")]
         /// <summary>
         /// Комментарий
         /// </summary>
+        [Required, Display(Name = "Комментарий")]
         public string Comment { get; set; }
 
     }

@@ -33,10 +33,6 @@ namespace TestTaskVodokanal.Pages.ApplicationPages
         [BindProperty]
         public History History { get; set; }
         /// <summary>
-        /// Следующий возможный статус завки
-        /// </summary>
-        public Status NextStatus { get; set; }
-        /// <summary>
         /// Список возможных статусов
         /// </summary>
         public SelectList SelectListStatus { get; set; }
@@ -52,7 +48,6 @@ namespace TestTaskVodokanal.Pages.ApplicationPages
                 .Include(b => b.ChangeHistory)
                 .FirstAsync(s => s.ApplicationID == id);
 
-            
             if (Application == null)
             {
                 return NotFound();
@@ -64,26 +59,22 @@ namespace TestTaskVodokanal.Pages.ApplicationPages
             if (Application.Status == Status.Open)
             {
                 //Из статуса «Открыта» заявка переходит в статус «Решена»
-                NextStatus = Status.Completed;
                 SelectListStatus = new SelectList(new List<Status>() { Status.Completed });
             }
             else if (Application.Status == Status.Completed)
             {
                 // Из статуса «Решена» заявка может прейти в статусы «Возврат» или «Закрыта»
-                NextStatus = Status.Close;
                 SelectListStatus = new SelectList(new List<Status>() { Status.Return, Status.Close });
             }
             else if (Application.Status == Status.Return)
             {
                 // Из статуса «Возврат» заявка переходит в статус «Решена».
-                NextStatus = Status.Return;
                 SelectListStatus = new SelectList(new List<Status>() { Status.Close });
             }
             else if (Application.Status == Status.Close)
             {
                 // статус "Закрыто" изменение не происходит.
-                NextStatus = Status.Close;
-                SelectListStatus = new SelectList(new List<Status>() { Status.Close });
+                return RedirectToPage("./Notification");
             }
 
             return Page();
@@ -96,36 +87,30 @@ namespace TestTaskVodokanal.Pages.ApplicationPages
                 return Page();
             }
 
-            // Изменения происходят если завка не закрыта
-            if (Application.Status != Status.Close)
+            // Записываем дату изменения
+            History.RegistrationDate = DateTime.Now;
+            // Записываем статус
+            History.Status = Application.Status;
+            // Записываем ид к какой завке относиться комментарий
+            History.ApplicationId = Application.ApplicationID;
+
+            _context.History.Add(History);
+
+            _context.Attach(Application).State = EntityState.Modified;
+
+            try
             {
-                // Записываем дату изменения
-                History.RegistrationDate = DateTime.Now;
-                // Записываем статус
-                History.Status = NextStatus;
-                // Записываем ид к какой завке относиться комментарий
-                History.ApplicationId = Application.ApplicationID;
-
-                _context.History.Add(History);
-
-                // Меняем статус задачи
-                Application.Status = NextStatus;
-                _context.Attach(Application).State = EntityState.Modified;
-
-                try
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!ApplicationExists(Application.ApplicationID))
                 {
-                    await _context.SaveChangesAsync();
+                    return NotFound();
                 }
-                catch (DbUpdateConcurrencyException)
+                else
                 {
-                    if (!ApplicationExists(Application.ApplicationID))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    throw;
                 }
             }
 

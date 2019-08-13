@@ -16,17 +16,18 @@ namespace TestTaskVodokanal.Pages.ApplicationPages
         public int ApplicationID { get; set; }
         public ApplicationIndexData Application { get; set; }
 
-        [BindProperty]
+        [BindProperty(SupportsGet = true)]
         public DateTimeSort DateTimeSort { get; set; }
 
         [BindProperty(SupportsGet = true)]
+
         /// <summary>
         /// Свойство для сортировки по статусу
         /// </summary>
         public Status SelectSortStatus { get; set; }
 
         /// <summary>
-        /// Свойство сортировки
+        /// Свойство для текущей сортировки
         /// </summary>
         public string CurrentSort { get; set; }
         /// <summary>
@@ -43,7 +44,6 @@ namespace TestTaskVodokanal.Pages.ApplicationPages
 
         public async Task OnGetAsync(int? id, string sortOrder)
         {
-            
             CurrentSort = sortOrder;
 
             // StatusSort используется как свойтво для фильтрации через asp-route-sortOrder
@@ -55,8 +55,9 @@ namespace TestTaskVodokanal.Pages.ApplicationPages
             {
                 Applications = await _context.Application
                     .Where(s => s.Status == SelectSortStatus)
+                    .Where(s => s.RegistrationDate >= DateTimeSort.DateTimeMin && s.RegistrationDate <= DateTimeSort.DateTimeMax)
                     .Include(s => s.ChangeHistory)
-                    .AsNoTracking() // Выведенный список нет необходимости хранить в кэше
+                    //.AsNoTracking() // Выведенный список нет необходимости хранить в кэше
                     .ToListAsync()
             };
 

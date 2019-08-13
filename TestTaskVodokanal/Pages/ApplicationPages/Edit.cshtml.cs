@@ -27,6 +27,20 @@ namespace TestTaskVodokanal.Pages.ApplicationPages
         /// История завки
         /// </summary>
         public IEnumerable<History> Historys { get; set; }
+        /// <summary>
+        /// Свойтво для добавления истории
+        /// </summary>
+        [BindProperty]
+        public History History { get; set; }
+
+        /// <summary>
+        /// Следующий возможный статус завки
+        /// </summary>
+        public Status NextStatus { get; set; }
+        /// <summary>
+        /// Список возможных статусов
+        /// </summary>
+        public SelectList SelectListStatus { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -34,8 +48,7 @@ namespace TestTaskVodokanal.Pages.ApplicationPages
             {
                 return NotFound();
             }
-            // Подтягивание данных
-            //Application = await _context.Application.Include(b => b.ChangeHistory).FirstAsync();
+            //Получаем данные из БД и подтягиваем данные
             Application = await _context.Application
                 .Include(b => b.ChangeHistory)
                 .FirstAsync(s => s.ApplicationID == id);
@@ -46,10 +59,33 @@ namespace TestTaskVodokanal.Pages.ApplicationPages
                 return NotFound();
             }
 
-            //Application = await _context.Application.FirstOrDefaultAsync(m => m.ApplicationID == id);
-            //Application = await _context.Application.Include(s => s.ChangeHistory).ToListAsync().Single(s => s.ApplicationID == id.Value);
-            //Historys = Application.ChangeHistory.Where(s => s.ApplicationId == id);
             Historys = Application.ChangeHistory.Where(s => s.ApplicationId == id);
+
+            // Проверка статуса
+            if (Application.Status == Status.Open)
+            {
+                //Из статуса «Открыта» заявка переходит в статус «Решена»
+                NextStatus = Status.Completed;
+                SelectListStatus = new SelectList(new List<Status>() { Status.Completed });
+            }
+            else if (Application.Status == Status.Completed)
+            {
+                // Из статуса «Решена» заявка может прейти в статусы «Возврат» или «Закрыта»
+                NextStatus = Status.Close;
+                SelectListStatus = new SelectList(new List<Status>() { Status.Return, Status.Close });
+            }
+            else if (Application.Status == Status.Return)
+            {
+                // Из статуса «Возврат» заявка переходит в статус «Решена».
+                NextStatus = Status.Return;
+                SelectListStatus = new SelectList(new List<Status>() { Status.Close });
+            }
+            else if (Application.Status == Status.Close)
+            {
+                // статус "Закрыто" изменение не происходит.
+                NextStatus = Status.Close;
+                SelectListStatus = new SelectList(new List<Status>() { Status.Close });
+            }
 
             return Page();
         }

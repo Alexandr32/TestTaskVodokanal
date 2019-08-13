@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TestTaskVodokanal.Models;
 using TestTaskVodokanal.Models.ViewModels;
@@ -12,18 +13,26 @@ namespace TestTaskVodokanal.Pages.ApplicationPages
 {
     public class IndexModel : PageModel
     {
-        public int ApplicationID{ get; set;}
+        public int ApplicationID { get; set; }
         public ApplicationIndexData Application { get; set; }
+
+        [BindProperty]
+        public DateTimeSort DateTimeSort { get; set; }
+
+        [BindProperty(SupportsGet = true)]
+        /// <summary>
+        /// Свойство для сортировки по статусу
+        /// </summary>
+        public Status SelectSortStatus { get; set; }
 
         /// <summary>
         /// Свойство сортировки
         /// </summary>
         public string CurrentSort { get; set; }
         /// <summary>
-        /// Свойства для сортировки имени
+        /// Свойства для сортировки по статусу
         /// </summary>
         public string StatusSort { get; set; }
-
 
         private readonly TestTaskVodokanal.Models.TestTaskVodokanalContext _context;
 
@@ -34,6 +43,7 @@ namespace TestTaskVodokanal.Pages.ApplicationPages
 
         public async Task OnGetAsync(int? id, string sortOrder)
         {
+            
             CurrentSort = sortOrder;
 
             // StatusSort используется как свойтво для фильтрации через asp-route-sortOrder
@@ -44,9 +54,10 @@ namespace TestTaskVodokanal.Pages.ApplicationPages
             Application = new ApplicationIndexData
             {
                 Applications = await _context.Application
-                .Include(s => s.ChangeHistory)
-                .AsNoTracking() // Выведенный список нет необходимости хранить в кэше
-                .ToListAsync()
+                    .Where(s => s.Status == SelectSortStatus)
+                    .Include(s => s.ChangeHistory)
+                    .AsNoTracking() // Выведенный список нет необходимости хранить в кэше
+                    .ToListAsync()
             };
 
             if (id != null)
@@ -65,15 +76,6 @@ namespace TestTaskVodokanal.Pages.ApplicationPages
                 case "status_desc":
                     Application.Applications = Application.Applications.OrderByDescending(s => s.Status);
                     break;
-                // Выборка по дате Порядок по возростанию
-                //case "Date":
-                //    studentIQ = studentIQ.OrderBy(s => s.EnrollmentDate);
-                //    break;
-                //// Выборка по дате порядок по убыванию
-                //case "date_desc":
-                //    studentIQ = studentIQ.OrderByDescending(s => s.EnrollmentDate);
-                //    break;
-                // По умолчанию используется порядок сортировки по возрастанию.
                 default:
                     Application.Applications = Application.Applications.OrderBy(s => s.Status);
                     break;

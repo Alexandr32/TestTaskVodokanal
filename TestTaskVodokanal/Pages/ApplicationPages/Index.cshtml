@@ -12,13 +12,29 @@
     <a asp-page="Create">Создать новую завку</a>
 </p>
 
+<form>
+    <div class="form-actions no-color">
+        <p>
+            Фильтр по статусу
+            <select asp-for="SelectSortStatus" asp-items="Html.GetEnumSelectList<Status>()">
+            </select>
+            Фильтр по дате:
+            <label asp-for="DateTimeSort.DateTimeMin"></label>
+            <input asp-for="DateTimeSort.DateTimeMin" />
+            <label asp-for="DateTimeSort.DateTimeMax"></label>
+            <input asp-for="DateTimeSort.DateTimeMax" />
+            <input type="submit" value="Отфильровать">
+        </p>
+    </div>
+</form>
+
 <table class="table">
     <thead>
         <tr>
             <th>Дата регестрации</th>
             <th>
-                <a asp-page="./Index" 
-                   asp-route-sortOrder="@Model.StatusSort" 
+                <a asp-page="./Index"
+                   asp-route-sortOrder="@Model.StatusSort"
                    asp-route-currentFilter="@Model.CurrentSort">
                     Статус
                 </a>
@@ -92,7 +108,7 @@
                         @Html.DisplayFor(modelItem => item.Comment)
                     </td>
                 </tr>
-        }
-            </tbody>
-        </table>
+            }
+        </tbody>
+    </table>
 }

@@ -32,7 +32,6 @@ namespace TestTaskVodokanal.Pages.ApplicationPages
         /// </summary>
         [BindProperty]
         public History History { get; set; }
-
         /// <summary>
         /// Следующий возможный статус завки
         /// </summary>
@@ -97,26 +96,42 @@ namespace TestTaskVodokanal.Pages.ApplicationPages
                 return Page();
             }
 
-            _context.Attach(Application).State = EntityState.Modified;
+            // Изменения происходят если завка не закрыта
+            if (Application.Status != Status.Close)
+            {
+                // Записываем дату изменения
+                History.RegistrationDate = DateTime.Now;
+                // Записываем статус
+                History.Status = NextStatus;
+                // Записываем ид к какой завке относиться комментарий
+                History.ApplicationId = Application.ApplicationID;
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ApplicationExists(Application.ApplicationID))
+                _context.History.Add(History);
+
+                // Меняем статус задачи
+                Application.Status = NextStatus;
+                _context.Attach(Application).State = EntityState.Modified;
+
+                try
                 {
-                    return NotFound();
+                    await _context.SaveChangesAsync();
                 }
-                else
+                catch (DbUpdateConcurrencyException)
                 {
-                    throw;
+                    if (!ApplicationExists(Application.ApplicationID))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
                 }
             }
 
             return RedirectToPage("./Index");
         }
+
 
         private bool ApplicationExists(int id)
         {

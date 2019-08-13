@@ -34,7 +34,7 @@ namespace TestTaskVodokanal.Pages.ApplicationPages
             }
 
             Application.Status = Status.Open;
-            Application.RegistrationDate = DateTime.Today;
+            Application.RegistrationDate = DateTime.Now;
 
             _context.Application.Add(Application);
             await _context.SaveChangesAsync();

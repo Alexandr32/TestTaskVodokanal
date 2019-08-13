@@ -16,19 +16,19 @@
 
             <div class="form-group">
                 <label asp-for="Application.RegistrationDate" class="control-label"></label>
-                @Html.DisplayFor(model => model.Application.RegistrationDate)
+                <input asp-for="Application.RegistrationDate" class="form-control" />
                 <span asp-validation-for="Application.RegistrationDate" class="text-danger"></span>
             </div>
 
             <div class="form-group">
                 <label asp-for="Application.Name" class="control-label"></label>
-                @Html.DisplayFor(model => model.Application.Name)
+                <input asp-for="Application.Name" class="form-control" />
                 <span asp-validation-for="Application.Name" class="text-danger"></span>
             </div>
 
             <div class="form-group">
                 <label asp-for="Application.Description" class="control-label"></label>
-                @Html.DisplayFor(model => model.Application.Description)
+                <input asp-for="Application.Description" class="form-control" />
                 <span asp-validation-for="Application.Description" class="text-danger"></span>
             </div>
 
@@ -37,51 +37,54 @@
                 @Html.DisplayFor(model => model.Application.Status)
             </div>
 
-            <div>
-                <h3>
-                    Информация о заявке
-                </h3>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Дата</th>
-                            <th>Статус</th>
-                            <th>Комментарий</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in Model.Historys)
-                        {
+            @if (Model.Historys != null)
+            {
+                <div>
+                    <h3>
+                        Информация о заявке
+                    </h3>
+                    <table class="table">
+                        <thead>
                             <tr>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.RegistrationDate)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Status)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Comment)
-                                </td>
+                                <th>Дата</th>
+                                <th>Статус</th>
+                                <th>Комментарий</th>
+                                <th></th>
                             </tr>
-                        }
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.Historys)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.RegistrationDate)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Status)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Comment)
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
 
-                <div class="form-group">
-                    <label asp-for="History.Comment" class="control-label"></label>
-                    <input asp-for="History.Comment" class="form-control" />
-                    <span asp-validation-for="History.Comment" class="text-danger"></span>
-                </div>
+                    <div class="form-group">
+                        <label asp-for="History.Comment" class="control-label"></label>
+                        <input asp-for="History.Comment" class="form-control" />
+                        <span asp-validation-for="History.Comment" class="text-danger"></span>
+                    </div>
 
-                <div class="form-group">
-                    <label class="control-label">Следующий статус завки измениться на:</label>
-                    <select asp-for="NextStatus"
-                            asp-items="Model.SelectListStatus"
-                            class="form-control">
-                    </select>
+                    <div class="form-group">
+                        <label class="control-label">Следующий статус завки измениться на:</label>
+                        <select asp-for="NextStatus"
+                                asp-items="Model.SelectListStatus"
+                                class="form-control">
+                        </select>
+                    </div>
                 </div>
-            </div>
+            }
 
             <div class="form-group">
                 <input type="submit" value="Сохранить" class="btn btn-default" />

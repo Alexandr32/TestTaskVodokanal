@@ -6,10 +6,10 @@
     ViewData["Title"] = "Index";
 }
 
-<h2>Index</h2>
+<h2>Список заявок</h2>
 
 <p>
-    <a asp-page="Create">Create New</a>
+    <a asp-page="Create">Создать новую завку</a>
 </p>
 
 <table class="table">
@@ -81,7 +81,6 @@
         <tbody>
             @foreach (var item in Model.Application.Historys)
             {
-
                 <tr>
                     <td>
                         @Html.DisplayFor(modelItem => item.RegistrationDate)
@@ -93,7 +92,7 @@
                         @Html.DisplayFor(modelItem => item.Comment)
                     </td>
                 </tr>
-            }
-        </tbody>
-    </table>
+        }
+            </tbody>
+        </table>
 }

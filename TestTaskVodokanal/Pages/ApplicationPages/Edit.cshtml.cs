@@ -53,7 +53,7 @@ namespace TestTaskVodokanal.Pages.ApplicationPages
                 return NotFound();
             }
 
-            Historys = Application.ChangeHistory.Where(s => s.ApplicationId == id);
+            Historys = Application.ChangeHistory;
 
             // Проверка статуса
             if (Application.Status == Status.Open)

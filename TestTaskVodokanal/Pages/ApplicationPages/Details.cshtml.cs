@@ -19,6 +19,7 @@ namespace TestTaskVodokanal.Pages.ApplicationPages
         }
 
         public Application Application { get; set; }
+        public IEnumerable<History> Historys { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -27,12 +28,17 @@ namespace TestTaskVodokanal.Pages.ApplicationPages
                 return NotFound();
             }
 
-            Application = await _context.Application.FirstOrDefaultAsync(m => m.ApplicationID == id);
+            Application = await _context.Application
+                .Include(b => b.ChangeHistory)
+                .FirstAsync(s => s.ApplicationID == id);
 
             if (Application == null)
             {
                 return NotFound();
             }
+
+            Historys = Application.ChangeHistory;
+
             return Page();
         }
     }

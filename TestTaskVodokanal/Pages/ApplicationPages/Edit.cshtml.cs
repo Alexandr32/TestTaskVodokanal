@@ -22,7 +22,6 @@ namespace TestTaskVodokanal.Pages.ApplicationPages
 
         [BindProperty]
         public Application Application { get; set; }
-        
         /// <summary>
         /// История завки
         /// </summary>
@@ -43,7 +42,7 @@ namespace TestTaskVodokanal.Pages.ApplicationPages
             {
                 return NotFound();
             }
-            //Получаем данные из БД и подтягиваем данные
+            // Получаем данные из БД и подтягиваем данные
             Application = await _context.Application
                 .Include(b => b.ChangeHistory)
                 .FirstAsync(s => s.ApplicationID == id);
@@ -73,7 +72,7 @@ namespace TestTaskVodokanal.Pages.ApplicationPages
             }
             else if (Application.Status == Status.Close)
             {
-                // статус "Закрыто" изменение не происходит.
+                // Статус "Закрыто" изменение не происходит.
                 return RedirectToPage("./Notification");
             }
 
@@ -113,10 +112,8 @@ namespace TestTaskVodokanal.Pages.ApplicationPages
                     throw;
                 }
             }
-
             return RedirectToPage("./Index");
         }
-
 
         private bool ApplicationExists(int id)
         {

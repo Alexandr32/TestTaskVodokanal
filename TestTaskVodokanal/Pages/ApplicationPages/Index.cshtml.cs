@@ -13,25 +13,27 @@ namespace TestTaskVodokanal.Pages.ApplicationPages
 {
     public class IndexModel : PageModel
     {
-        public int ApplicationID { get; set; }
         public ApplicationIndexData Application { get; set; }
 
+        /// <summary>
+        /// Свойство для поиска по времени
+        /// </summary>
         [BindProperty(SupportsGet = true)]
         public DateTimeSort DateTimeSort { get; set; }
-
-        [BindProperty(SupportsGet = true)]
 
         /// <summary>
         /// Свойство для сортировки по статусу
         /// </summary>
+        [BindProperty(SupportsGet = true)]
         public Status SelectSortStatus { get; set; }
 
         /// <summary>
         /// Свойство для текущей сортировки
         /// </summary>
         public string CurrentSort { get; set; }
+
         /// <summary>
-        /// Свойства для сортировки по статусу
+        /// Свойства для сортировки столбика по статусу
         /// </summary>
         public string StatusSort { get; set; }
 
@@ -48,7 +50,7 @@ namespace TestTaskVodokanal.Pages.ApplicationPages
 
             // StatusSort используется как свойтво для фильтрации через asp-route-sortOrder
             // Присваивается противоположное значение относительно текущего параметра сотояния 
-            // для дальнейшей сортировки при выборе необходимости сортировки
+            // для дальнейшей сортировки при выборе необходимости сортировки при нажатии на заголовок столбика с значениями
             StatusSort = string.IsNullOrEmpty(sortOrder) ? "status_desc" : "";
 
             Application = new ApplicationIndexData
@@ -60,15 +62,6 @@ namespace TestTaskVodokanal.Pages.ApplicationPages
                     .AsNoTracking() // Выведенный список нет необходимости хранить в кэше
                     .ToListAsync()
             };
-
-            if (id != null)
-            {
-                // Узнаем ид выбранного элемента
-                ApplicationID = id.Value;
-                // Извлекаем заяки по id;
-                Application selectApplication = Application.Applications.Single(s => s.ApplicationID == id.Value);
-                Application.Historys = selectApplication.ChangeHistory;
-            }
 
             // Сортировка в зависимости от переданного параметра
             switch (sortOrder)
